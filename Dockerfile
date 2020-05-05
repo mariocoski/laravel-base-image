@@ -38,9 +38,6 @@ RUN docker-php-ext-install pdo_mysql && docker-php-ext-enable pdo_mysql
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 # turn off deamonize for php-fpm as provided by supervisor
 RUN sed -i 's/;daemonize = yes/daemonize = no/g' /usr/local/etc/php-fpm.conf
 
@@ -55,6 +52,3 @@ COPY laravel.ini /usr/local/etc/php/conf.d
 # configure laravel scheduler
 RUN echo "* * * * * root /usr/local/bin/php /var/www/artisan schedule:run >> /dev/null 2>&1"  >> /etc/cron.d/laravel-scheduler
 RUN chmod 0644 /etc/cron.d/laravel-scheduler
-
-# Install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
